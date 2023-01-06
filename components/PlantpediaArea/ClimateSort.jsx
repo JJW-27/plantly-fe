@@ -28,7 +28,7 @@ const ClimateSort = ({ selectedClimate, setSelectedClimate }) => {
         paddingLeft: 15,
         backgroundColor: "#f8fdfb",
         paddingHorizontal: 10,
-        width: 250,
+        width: 215,
       }}
       dropdownStyles={{
         borderRadius: 20,
