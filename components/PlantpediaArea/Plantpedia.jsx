@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -7,19 +7,20 @@ import {
   Modal,
   Image,
   Pressable,
-} from "react-native";
-import PlantPediaPlants from "./PlantpediaPlants";
-import { getPlants, getPlantById } from "../../api/api.js";
-import * as ImagePicker from "expo-image-picker";
-import { SafeAreaView } from "react-native-safe-area-context";
-import UserAreaHeader from "../UserArea/UserAreaHeader";
-import SinglePlantModal from "./Modals/SinglePlantModal";
-import AddToMyPlantsModal from "./Modals/AddToMyPlantsModal";
-import PlantIdModal from "./Modals/plantIdModal";
-import axios from "axios";
-import ClimateSort from "./ClimateSort";
-import Nav from "../Nav";
-import PlantpediaSearchBar from "../PlantpediaSearchBar";
+} from 'react-native';
+import PlantPediaPlants from './PlantpediaPlants';
+import { getPlants, getPlantById } from '../../api/api.js';
+import * as ImagePicker from 'expo-image-picker';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UserAreaHeader from '../UserArea/UserAreaHeader';
+import SinglePlantModal from './Modals/SinglePlantModal';
+import AddToMyPlantsModal from './Modals/AddToMyPlantsModal';
+import PlantIdModal from './Modals/plantIdModal';
+import axios from 'axios';
+import ClimateSort from './ClimateSort';
+import Nav from '../Nav';
+import PlantpediaSearchBar from '../PlantpediaSearchBar';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 const Plantpedia = ({ navigation }) => {
   const [plantpediaLoading, setPlantpediaLoading] = useState(true);
@@ -31,7 +32,7 @@ const Plantpedia = ({ navigation }) => {
   const [singlePlantData, setSinglePlantData] = useState({});
 
   const [isInvalidSearch, setIsInvalidSearch] = useState(false);
-  const [invalidSearchText, setInvalidSearchText] = useState("");
+  const [invalidSearchText, setInvalidSearchText] = useState('');
   const [selectedClimate, setSelectedClimate] = useState(undefined);
   const [plantIdModalVisible, setPlantIdModalVisible] = useState(false);
   const [plantIdModalLoading, setPlantIdModalLoading] = useState(true);
@@ -39,7 +40,7 @@ const Plantpedia = ({ navigation }) => {
 
   useEffect(() => {
     getPlants(selectedClimate, searchText)
-      .then((fetchedPlants) => {
+      .then(fetchedPlants => {
         setIsInvalidSearch(false);
         setPlantsData(fetchedPlants);
         setPlantpediaLoading(false);
@@ -51,10 +52,10 @@ const Plantpedia = ({ navigation }) => {
       });
   }, [selectedClimate, searchText]);
 
-  const handleAddToPlant = (plant_id) => {
+  const handleAddToPlant = plant_id => {
     setModalVisible(true);
     setModalLoading(true);
-    getPlantById(plant_id).then((plant) => {
+    getPlantById(plant_id).then(plant => {
       setSinglePlantData(plant);
       setModalLoading(false);
     });
@@ -72,15 +73,15 @@ const Plantpedia = ({ navigation }) => {
 
   const handlePlantId = () => {
     setPlantIdModalVisible(true);
-    ImagePicker.launchCameraAsync({ base64: true }).then((res) => {
-      const imgBase64 = res.assets[0]["base64"];
+    launchCamera({ includeBase64: true }).then(res => {
+      const imgBase64 = res.assets['base64'];
       return axios
-        .post("https://plant.id/api/v2/identify", {
+        .post('https://plant.id/api/v2/identify', {
           images: [imgBase64],
-          plant_details: ["common_names", "wiki_image"],
-          api_key: "JfQUcSr9TXzmj6TWBtg1yOzbVWqdzEAblciBqvZmbgX6u0rbZ0",
+          plant_details: ['common_names', 'wiki_image'],
+          api_key: 'JfQUcSr9TXzmj6TWBtg1yOzbVWqdzEAblciBqvZmbgX6u0rbZ0',
         })
-        .then((data) => {
+        .then(data => {
           setPlantSuggestions(data.data.suggestions);
           setPlantIdModalLoading(false);
         });
@@ -114,11 +115,11 @@ const Plantpedia = ({ navigation }) => {
           />
           <Pressable style={styles.plantId} onPress={handlePlantId}>
             <Image
-              source={require("../../assets/camera.jpg")}
+              source={require('../../assets/camera.jpg')}
               style={{ height: 25, width: 30 }}
             />
           </Pressable>
-          <Text style={styles.plantIdText}>Plant{"\n"}ID</Text>
+          <Text style={styles.plantIdText}>Plant{'\n'}ID</Text>
         </View>
       </SafeAreaView>
       {plantpediaLoading ? (
@@ -126,12 +127,12 @@ const Plantpedia = ({ navigation }) => {
           style={{
             flex: 1,
             // marginTop: "20%",
-            alignItems: "center",
-            alignSelf: "center",
+            alignItems: 'center',
+            alignSelf: 'center',
           }}
         >
           <Image
-            source={require("../../assets/loadingLight.gif")}
+            source={require('../../assets/loadingLight.gif')}
             style={{ height: 200, width: 200 }}
           />
         </View>
@@ -192,50 +193,50 @@ const Plantpedia = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#729d84",
+    backgroundColor: '#729d84',
   },
   safe: {
-    width: "100%",
+    width: '100%',
     flex: 0.9,
-    backgroundColor: "#729d84",
-    color: "#f8fdfb",
+    backgroundColor: '#729d84',
+    color: '#f8fdfb',
     marginTop: 10,
   },
 
   invalid: {
-    fontFamily: "Raleway_400Regular",
+    fontFamily: 'Raleway_400Regular',
     fontSize: 25,
     padding: 20,
-    color: "#f8fdfb",
+    color: '#f8fdfb',
   },
   sortAndId: {
     // flex: 0.2,
     // overflow: "visible",
-    flexDirection: "row",
+    flexDirection: 'row',
     // height: 40,
-    alignItems: "center",
-    backgroundColor: "#d9d9d9",
+    alignItems: 'center',
+    backgroundColor: '#d9d9d9',
     paddingHorizontal: 20,
     paddingBottom: 5,
   },
   learnMore: {
     paddingHorizontal: 20,
-    textAlign: "center",
-    backgroundColor: "#d9d9d9",
+    textAlign: 'center',
+    backgroundColor: '#d9d9d9',
     paddingTop: 5,
     paddingBottom: 9,
     fontSize: 18,
     marginBottom: 0,
     // marginTop: 10,
-    fontFamily: "Raleway_400Regular",
+    fontFamily: 'Raleway_400Regular',
   },
   plantId: {
-    fontFamily: "Raleway_400Regular",
-    alignSelf: "center",
-    alignItems: "center",
-    alignContent: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
+    fontFamily: 'Raleway_400Regular',
+    alignSelf: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
     marginVertical: 3,
     marginLeft: 10,
     marginRight: 5,
@@ -248,17 +249,17 @@ const styles = StyleSheet.create({
   plantIdText: {
     // textAlign: "center",
     fontSize: 15,
-    fontFamily: "Raleway_400Regular",
+    fontFamily: 'Raleway_400Regular',
   },
 
   modalView: {
     flex: 1,
     margin: 0,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 30,
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
